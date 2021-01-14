@@ -9,9 +9,9 @@
 	
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
-		<property name="jdbcUrl" value="jdbc:oracle:thin:@db202101121103_high?TNS_ADMIN=/home/opc/wallet"></property>		
-		<property name="username" value="admin"></property>		
-		<property name="password" value="$dbfkDbfk1010$"></property>		
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>		
+		<property name="username" value="c##mydbms"></property>		
+		<property name="password" value="admin"></property>		
 	</bean>
 	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
@@ -25,4 +25,5 @@
 	<mybatis-spring:scan base-package="org.zerock.mapper"/>
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:component-scan base-package="org.zerock.service"></context:component-scan>
 </beans>
