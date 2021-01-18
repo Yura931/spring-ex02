@@ -14,10 +14,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.FlashMap;
 import org.springframework.web.servlet.ModelAndView;
+import org.zerock.domain.BoardVO;
 import org.zerock.mapper.BoardMapper;
 
 import lombok.Setter;
@@ -67,24 +70,96 @@ public class BoardControllerTests {
 		assertNotEquals(((List) o).size(), 0);
 	}
 	
-	/*
+	
 	@Test
 	public void testRegister() throws Exception {
 		int before = mapper.getList().size();
 		
-		ModelAndView result = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
-				.param("title", "테스트 새글 제목")
-				.param("content", "테스트 새글 내용")
-				.param("writer", "user00")) // 브라우저 흉내 submit버튼 누르는 행동을 대신 해주는 것
-			.andReturn()
-			.getModelAndView();
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/board/register")
+						.param("title", "테스트 새글 제목")
+						.param("content", "테스트 새글 내용")
+						.param("writer", "user00"))
+			.andReturn();
+		
+		ModelAndView mv = result.getModelAndView();
+		FlashMap map = result.getFlashMap();
 		
 		int after = mapper.getList().size();
 		
 		assertEquals(before + 1, after);
-		assertEquals("redirect:/board/list", result.getViewName());
-		FlashMap map = result.getFlashMap();
+		assertEquals("redirect:/board/list", mv.getViewName());
+		assertNotNull(map.get("result"));
+		
+		log.info(map.get("result") + "*************************");
 		
 	}
-	*/
+	
+	@Test
+	public void testGet() throws Exception {
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/board/get")
+				.param("bno", "1"))
+			.andReturn();
+		String viewName = result.getModelAndView().getViewName();
+		Map<String, Object> modelMap = result.getModelAndView().getModel();
+		
+		assertEquals("board/get", viewName);
+		assertNotNull(modelMap.get("board"));
+		assertEquals(new Long(1), ((BoardVO) modelMap.get("board")).getBno());
+	}
+	
+	@Test
+	public void testModify() throws Exception {
+		BoardVO board = new BoardVO();
+		board.setContent("새 게시물");
+		board.setTitle("새 제목");
+		board.setWriter("user00");
+		
+		mapper.insertSelectKey(board);
+		
+		Long key = board.getBno();
+		
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/board/modify")
+				.param("bno", key + "")
+				.param("title", "수정된 게시물111")
+				.param("content", "수정된 본문1111")
+				.param("writer", "user00"))
+			.andReturn();
+		
+		FlashMap map = result.getFlashMap();
+		String viewName = result.getModelAndView().getViewName();
+		BoardVO mod = mapper.read(key);
+		
+		assertEquals("수정된 게시물111", mod.getTitle());
+		assertEquals("수정된 본문1111", mod.getContent());
+		assertEquals("success", map.get("result"));
+		assertEquals("redirect:/board/list", viewName);
+	}
+	
+	@Test
+	public void testRemove() throws Exception {
+		BoardVO board = new BoardVO();
+		board.setContent("새 게시물");
+		board.setTitle("새 제목");
+		board.setWriter("user00");
+		
+		mapper.insertSelectKey(board);
+		
+		Long key = board.getBno();
+		
+		int before = mapper.getList().size();
+		
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/board/remove")
+				.param("bno", key + ""))
+			.andReturn();
+		
+		int after = mapper.getList().size();
+		
+		assertEquals(before-1, after);
+		
+		String viewName = result.getModelAndView().getViewName();
+		
+		assertEquals("redirect:/board/list", viewName);
+		
+		assertEquals("success", result.getFlashMap().get("result"));
+	}
 }
