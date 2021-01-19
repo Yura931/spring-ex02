@@ -53,6 +53,7 @@ public class BoardControllerTests {
 		assertNotNull(mockMvc);
 	}
 	 
+/*	
 	@Test
 	public void testList() throws Exception {
 		ModelAndView mv = mockMvc.perform(MockMvcRequestBuilders.get("/board/list"))
@@ -69,7 +70,7 @@ public class BoardControllerTests {
 		assertTrue(o instanceof List);
 		assertNotEquals(((List) o).size(), 0);
 	}
-	
+*/	
 	
 	@Test
 	public void testRegister() throws Exception {
@@ -97,17 +98,17 @@ public class BoardControllerTests {
 	@Test
 	public void testGet() throws Exception {
 		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/board/get")
-				.param("bno", "1"))
+				.param("bno", "5"))
 			.andReturn();
 		String viewName = result.getModelAndView().getViewName();
 		Map<String, Object> modelMap = result.getModelAndView().getModel();
 		
 		assertEquals("board/get", viewName);
 		assertNotNull(modelMap.get("board"));
-		assertEquals(new Long(1), ((BoardVO) modelMap.get("board")).getBno());
+		assertEquals(new Long(5), ((BoardVO) modelMap.get("board")).getBno());
 	}
 	
-	@Test
+	@Test 
 	public void testModify() throws Exception {
 		BoardVO board = new BoardVO();
 		board.setContent("새 게시물");
@@ -162,4 +163,20 @@ public class BoardControllerTests {
 		
 		assertEquals("success", result.getFlashMap().get("result"));
 	}
+	
+	@Test
+	public void testListPaging() throws Exception {
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+				.param("pageNum", "2")
+				.param("amount", "10"))
+			.andReturn();
+		
+		Map<String, Object> model = result.getModelAndView().getModel();
+		List list = (List) model.get("list");
+		
+		assertEquals(10,  list.size());
+	}
 }
+
+
+

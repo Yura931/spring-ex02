@@ -11,7 +11,7 @@
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl"></property>		
 		<property name="username" value="c##mydbms"></property>		
-		<property name="password" value="admin"></property>		
+		<property name="password" value="admin"></property>		 
 	</bean>
 	
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">

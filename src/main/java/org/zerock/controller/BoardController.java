@@ -3,6 +3,7 @@ package org.zerock.controller;
 import java.util.List;
 
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
+import org.zerock.domain.PageDTO;
 import org.zerock.service.BoardService;
 
 import lombok.AllArgsConstructor;
@@ -30,13 +33,27 @@ public class BoardController { // 컨트롤러는 서비스가 한 일을 모델
 		this.service = service;
 	}
 	*/
-	
+
+/*
 	// 211 page 표
 //	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@GetMapping("/list")
 	public void list(Model model) { // DispatcherServlet이 관리하도록 / jsp로 포워딩 당할 때 Model에 있는 Attribute들이 그대로 옮겨져가게 됨
 		List<BoardVO> list = service.getList();
 		model.addAttribute("list", list);
+	}
+*/
+	@GetMapping("/list")
+	public void list(Criteria cri, Model model) {
+		List<BoardVO> list = service.getList(cri);
+		
+		int total = service.getTotal(cri);
+		
+		PageDTO dto = new PageDTO(cri, total);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pageMaker", dto);
+		
 	}
 	
 	@GetMapping("/register")
