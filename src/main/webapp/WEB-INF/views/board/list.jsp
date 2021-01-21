@@ -81,8 +81,13 @@
           <tr>
             <td>${board.bno}</td>
             <td>
-            <a href="${root }/board/get?bno=${board.bno }">
-            <c:out value="${board.title}" />
+            <c:url value="/board/get" var="boardLink">
+            	<c:param value="${board.bno }" name="bno" />
+            	<c:param value="${pageMaker.cri.pageNum }" name="pageNum" />
+            	<c:param value="${pageMaker.cri.amount }" name="amount"></c:param>
+            </c:url>	
+            <a href="${boardLink }">
+            	<c:out value="${board.title}" />
             </a>
             </td>
             <td><c:out value="${board.writer}" /></td>

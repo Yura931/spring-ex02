@@ -46,7 +46,7 @@ $(document).ready(function() {
 		<div class="row">
 			<div class="col-12 col-sm-6 offset-sm-3">
 
-				<form id="modify-form" method="post" action="${root }/board/modify2"> <%--action="${root}/board/modify 생략 되어 있는 것 --%>
+				<form id="modify-form" method="post" action="${root }/board/modify"> <%--action="${root}/board/modify 생략 되어 있는 것 --%>
 					
 					<div class="form-group">						
 						<label for="input3">번호</label> <input name="bno" id="input3" value='<c:out value="${board.bno }" />'
@@ -69,6 +69,8 @@ $(document).ready(function() {
 							class="form-control" readonly id="input2">
 					</div>
 
+					<input type="hidden" value="${cri.pageNum }" name="pageNum" />
+					<input type="hidden" value="${cri.amount }" name="amount" />
 					<button type="submit" class="btn btn-primary">수정</button>
 					<button id="remove-btn" type="submit" class="btn btn-danger">삭제</button>
 				</form>

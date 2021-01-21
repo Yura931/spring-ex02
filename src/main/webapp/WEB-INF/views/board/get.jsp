@@ -18,6 +18,7 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 
 <script>
+<%--
 $(document).ready(function() {
 	
 	var message = '${message}';
@@ -33,6 +34,7 @@ $(document).ready(function() {
 		}
 	}
 });	
+--%>
 </script>
 
 <title>Insert title here</title>
@@ -56,7 +58,7 @@ $(document).ready(function() {
 						
 					<div class="form-group">	
 						<label for="input1">제목</label> <input readonly value='<c:out value="${board.title }"/>' type="text"
-							class="form-control" id="input1" placeholder="제목을 입력하세요." >
+							class="form-control" id="input1" >
 					</div>
 
 					<div class="form-group">
@@ -70,12 +72,19 @@ $(document).ready(function() {
 							class="form-control" id="input2" readonly value='<c:out value="${board.writer }" />' >
 					</div>
 					
-					<a href="${root }/board/modify?bno=${board.bno }" class="btn btn-secondary">수정</a>
+					<c:url value="/board/modify" var="modifyLink">
+						<c:param name="bno" value="${board.bno }"></c:param>
+						<c:param name="pageNum" value="${cri.pageNum }"></c:param>
+						<c:param name="amount" value="${cri.amount }"></c:param>
+					</c:url>						
+					<a href="${modifyLink }" class="btn btn-secondary">
+					수정
+					</a>
 					
 			</div>
 		</div>
 	</div>
-
+<%--
 <div id="myModal" class="modal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -94,6 +103,7 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+ --%>
 
 </body>
 </html>

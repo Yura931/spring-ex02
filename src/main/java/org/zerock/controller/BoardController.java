@@ -2,11 +2,10 @@ package org.zerock.controller;
 
 import java.util.List;
 
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +56,7 @@ public class BoardController { // 컨트롤러는 서비스가 한 일을 모델
 	}
 	
 	@GetMapping("/register")
-	public void register() {
+	public void register(@ModelAttribute("cri") Criteria cri) {
 		
 	}
 	
@@ -87,7 +86,8 @@ public class BoardController { // 컨트롤러는 서비스가 한 일을 모델
 	}
 	
 	@GetMapping({"/get", "/modify"}) 
-	public void get(@RequestParam("bno") Long bno, Model model) {
+	public void get(@RequestParam("bno") Long bno, 
+			@ModelAttribute("cri") Criteria cri, Model model) {
 		log.info("get method - bno: " + bno);
 		BoardVO vo = service.get(bno);
 		model.addAttribute("board", vo);
@@ -102,12 +102,15 @@ public class BoardController { // 컨트롤러는 서비스가 한 일을 모델
 	*/
 	
 	@PostMapping("/modify")
-	public String modify(BoardVO board, RedirectAttributes rttr) {
+	public String modify(BoardVO board, Criteria cri, RedirectAttributes rttr) {
 		
 		if (service.modify(board)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", board.getBno() + "번 글이 수정되었습니다.");
 		}
+		log.info(cri);
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		
 //		return "board/list"; // redirect하지 않고 board/list로 포워드 , 포스트로 요청이 온 후 적절하게 리다이렉트 해 줄 필요가 있다. 리다이렉트가 아닌 포워드로 요청이 된 경우 새로고침 했을 때 post요청이 한번 더 보내지게 됨
 		return "redirect:/board/list";
@@ -126,12 +129,16 @@ public class BoardController { // 컨트롤러는 서비스가 한 일을 모델
 	}
 	
 	@PostMapping("/remove")
-	public String remove(@RequestParam("bno") Long bno, RedirectAttributes rttr) {
+	public String remove(@RequestParam("bno") Long bno, 
+			Criteria cri, RedirectAttributes rttr) {
 		
 		if (service.remove(bno)) {
 			rttr.addFlashAttribute("result", "success");
 			rttr.addFlashAttribute("message", bno + "번 글이 삭제되었습니다.");
 		}
+		
+		rttr.addAttribute("pageNum", cri.getPageNum());
+		rttr.addAttribute("amount", cri.getAmount());
 		
 		System.out.println(bno);
 		
