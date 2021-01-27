@@ -145,10 +145,14 @@
 	</div> 
 </div>
 
+
+
 <div class="d-none">
 	<form id="actionForm" action="${root }/board/list" >
 		<input name="pageNum" value="${pageMaker.cri.pageNum }" />
 		<input name="amount" value="${pageMaker.cri.amount }"/>
+		<input name="type" value="${pageMaker.cri.type }" />
+		<input name="keyword" value="${pageMaker.cri.keyword }" />
 		<input type="submit" />
 	</form>
 </div>
