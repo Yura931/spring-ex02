@@ -16,8 +16,58 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="${root }/resources/js/reply.js"></script>
 
 <script>
+// console.log(replyService.name);
+// replyService.add("my reply"); //add함수를 실행시킨 것 , reply.js파일의 replyService의 add함수를 실행시킨 것 , add함수는 파라미터를 가짐, 이 안에 파라미터 값을 넣어준 것
+
+
+
+console.log(replyService.add);
+
+/*
+replyService.add({
+	bno:300, 
+	reply:"new reply 댓글", 
+	replyer:"user00"
+	}, function(result) {
+		console.log(result);
+	}, function(er) {
+		console.log(er);	
+	});
+*/
+
+/*
+replyService.getList({
+	bno:7,
+	page:1
+	}, function(data) {
+		console.log(data); 
+	}, function() {
+		console.log("error");
+});
+*/
+
+/*
+replyService.remove(10, function(data, status){
+		console.log(data);
+		console.log(status);
+	}, function(err) {
+		console.log(err);
+});
+*/
+
+/*
+replyService.update({
+	rno:37,
+	reply:'또 수정된 본문',
+	}, function(data, status){
+		console.log(data);	
+	}, function(err){
+		console.log(err);
+});
+*/
 <%--
 $(document).ready(function() {
 	

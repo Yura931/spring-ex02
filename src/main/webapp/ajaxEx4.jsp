@@ -22,9 +22,8 @@ $(document).ready(function() {
 			url: "/replies/new",
 			contentType: "application/json",
 			data: '{"bno":7, "reply":"새 댓글", "replyer":"user01"}',
-			complete: function(jqXHR, status) { // 기능 , 곧 property의 값이 function()임
-				console.log("complete");
-				console.log(status);
+			success: function(data, status, xhr) {
+				console.log(data);
 			}
 		});
 	});
@@ -42,46 +41,37 @@ $(document).ready(function() {
 		});
 	});
 	
-	$("#btn-3").click(function() {
+	$("#btn-3").click(function() { // done, fail 사용
 		$.ajax({
 			type: "post",
 			url: "/replies/new",
 			contentType: "application/json",
-			data: '{"bno":7, "reply":"새 댓글", "replyer":"user00"}',
-			complete: function(jqXHR, status) {
-				if (status === "success"){
-					console.log("등록 성공");
-					console.log(jqXHR.responseText);
-				} else if (status === "error") {
-					console.log("등록 실패");
-				}				
-			}
-		});
+			data: '{"bno":7, "reply":"새 댓글", "replyer":"user00"}'			
+		}).done(function(data, status, xhr) {
+			console.log("등록 성공")
+			console.log(data);
+		}).fail(function() {
+				console.log("등록 실패");
+		});    	// ajax메소드의 리턴값에 연결해서 사용하면 됨, ajax 함수가 끝나는 부분에 붙여 사용 가능
 	});
 	
 	$("#btn-4").click(function() {
 		$.ajax({
 			type: "get",
-			url: "/replies/pages/7/1",
-			complete: function(jqXHR, status) {
-				if(status === "success") {
-					console.log(jqXHR.responseText);
-				}
-			}
+			url: "/replies/pages/7/1"
+		}).done(function(data, status, xhr) {
+			console.log(data);
 		});
 	});
 	
 	$("#btn-5").click(function(){
 		$.ajax({
 			type: "delete",
-			url: "/replies/35",
-			complete: function(jqXHR, status) {
-				if (status === "success") {
-					console.log("삭제 성공");
-				} else if (status === "error") {
-					console.log("삭제 실패");
-				}
-			}
+			url: "/replies/35"
+		}).done(function() { 
+			console.log("삭제 성공");
+		}).fail(function() {
+			console.log("삭제 실패");
 		});
 	});
 	
@@ -90,23 +80,19 @@ $(document).ready(function() {
 			type: "put",
 			url: "/replies/37",
 			data: '{"bno":7, "reply":"수정본~"}',
-			contentType: "application/json;charset=utf-8", // 인코딩까지 하고싶으면 ; charset=utf-8추가
-			complete: function(jqXHR, status) { // 응답이 왔을 때 일어나는 일이 complete에서 실행 됨, 응답 받은 이후에 일을 함
-				if(status === "success") {
-					console.log("수정 됨");
-					console.log("complete");
-					console.log(jqXHR.responseText); // jqXHR ajax 객체라고 생각
-				} else if(status === "error") {
-					console.log("수정 안됨...");
-				}
-			}
+			contentType: "application/json;charset=utf-8"
+		}).done(function(data, status, xhr) {
+				console.log("수정 됨");
+				console.log(data);
+		}).fail(function() {
+				console.log("수정 안됨..");
 		});
 	});
 });
 </script>
 </head>
 <body>
-<h1>AJAX EX2</h1>
+<h1>AJAX EX4</h1>
  
 <div> 
 <button id="btn-1">댓글 등록 성공</button>

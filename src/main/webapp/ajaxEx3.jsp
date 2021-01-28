@@ -22,9 +22,8 @@ $(document).ready(function() {
 			url: "/replies/new",
 			contentType: "application/json",
 			data: '{"bno":7, "reply":"새 댓글", "replyer":"user01"}',
-			complete: function(jqXHR, status) { // 기능 , 곧 property의 값이 function()임
-				console.log("complete");
-				console.log(status);
+			success: function(data, status, xhr) {
+				console.log(data);
 			}
 		});
 	});
@@ -48,13 +47,13 @@ $(document).ready(function() {
 			url: "/replies/new",
 			contentType: "application/json",
 			data: '{"bno":7, "reply":"새 댓글", "replyer":"user00"}',
-			complete: function(jqXHR, status) {
-				if (status === "success"){
-					console.log("등록 성공");
-					console.log(jqXHR.responseText);
-				} else if (status === "error") {
-					console.log("등록 실패");
-				}				
+			success: function(data, status, xhr) { // settings의 적절한 프로퍼티를 넣어서 사용
+				console.log("등록 성공");
+				// console.log(jqXHR.responseText); // 응답 텍스트 보여주는 일, success일 때 함수의 파라미터 중 첫번째 파라미터가 responseText와 같은 일을 함
+				console.log(data);
+			},
+			error: function() {
+				console.log("등록 실패"); // success와 error함수 사용
 			}
 		});
 	});
@@ -63,10 +62,8 @@ $(document).ready(function() {
 		$.ajax({
 			type: "get",
 			url: "/replies/pages/7/1",
-			complete: function(jqXHR, status) {
-				if(status === "success") {
-					console.log(jqXHR.responseText);
-				}
+			success: function(data, status, xhr) {
+				console.log(data);
 			}
 		});
 	});
@@ -75,12 +72,11 @@ $(document).ready(function() {
 		$.ajax({
 			type: "delete",
 			url: "/replies/35",
-			complete: function(jqXHR, status) {
-				if (status === "success") {
-					console.log("삭제 성공");
-				} else if (status === "error") {
-					console.log("삭제 실패");
-				}
+			success: function() { // 내부에서 사용하지 않을 시 파라미터 생략 가능
+				console.log("삭제 성공");
+			},
+			error: function() {
+				console.log("삭제 실패");
 			}
 		});
 	});
@@ -91,14 +87,12 @@ $(document).ready(function() {
 			url: "/replies/37",
 			data: '{"bno":7, "reply":"수정본~"}',
 			contentType: "application/json;charset=utf-8", // 인코딩까지 하고싶으면 ; charset=utf-8추가
-			complete: function(jqXHR, status) { // 응답이 왔을 때 일어나는 일이 complete에서 실행 됨, 응답 받은 이후에 일을 함
-				if(status === "success") {
-					console.log("수정 됨");
-					console.log("complete");
-					console.log(jqXHR.responseText); // jqXHR ajax 객체라고 생각
-				} else if(status === "error") {
-					console.log("수정 안됨...");
-				}
+			success: function(data, status, xhr) {
+				console.log("수정 됨");
+				console.log(data);
+			},
+			error: function() {
+				console.log("수정 안됨..");
 			}
 		});
 	});
@@ -106,7 +100,7 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-<h1>AJAX EX2</h1>
+<h1>AJAX EX3</h1>
  
 <div> 
 <button id="btn-1">댓글 등록 성공</button>
