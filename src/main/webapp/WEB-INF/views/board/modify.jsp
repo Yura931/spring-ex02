@@ -39,12 +39,12 @@ $(document).ready(function() {
 <u:navbar/>
 	<div class="container-sm">
 		<div class="row">
-			<div class="col-12 col-sm-6 offset-sm-3">
-				<h1>게시물 작성</h1>
+			<div class="col-12 col-lg-6 offset-lg-3">
+				<h1>게시물 수정</h1>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-12 col-sm-6 offset-sm-3">
+			<div class="col-12 col-lg-6 offset-lg-3">
 
 				<form id="modify-form" method="post" action="${root }/board/modify"> <%--action="${root}/board/modify 생략 되어 있는 것 --%>
 					
